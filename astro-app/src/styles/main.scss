@@ -1,0 +1,58 @@
+@import 'variables';
+@import 'layouts';
+@import 'components';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 67.5%;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  background-color: $blue;
+  font-family: $font-body;
+  font-size: 1.8rem;
+  line-height: 1.4;
+  color: $text;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-heading;
+  line-height: 1;
+  color: $dark;
+  margin-bottom: 0;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+p {
+  margin-bottom: $spacing-sm;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+a {
+  color: $green;
+  text-decoration: none;
+}

@@ -1,0 +1,20 @@
+---
+export interface Props {
+  text: string;
+  href: string;
+  class?: string;
+  icon?: string;
+}
+
+const { text, href, class: className = '', icon } = Astro.props;
+---
+
+<a
+  href={href}
+  class={`btn btn--${className}`}
+  target='_blank'
+  rel='noopener noreferrer'
+>
+  {icon && <img src={icon} alt='' />}
+  <span class='btn__text'>{text}</span>
+</a>

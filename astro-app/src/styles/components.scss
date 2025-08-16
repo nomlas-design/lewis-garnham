@@ -1,0 +1,92 @@
+.btn {
+  position: relative;
+  display: flex;
+  background: $beige;
+  color: $dark;
+  align-self: flex-start;
+  gap: 1.2rem;
+  padding: 1.4rem $spacing-lg;
+  border-radius: 0.8rem;
+  border: 5px solid $dark;
+  transition: background 0.15s ease-in-out;
+
+  &:hover {
+    background: $yellow;
+  }
+
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   inset: 0;
+  //   left: -0.5rem;
+  //   top: -1rem;
+  //   border: 5px solid $dark;
+  //   border-radius: inherit;
+  //   pointer-events: none;
+  //   filter: url(#wobbly-stroke);
+  // }
+
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   inset: 0;
+  //   left: -0.5rem;
+  //   top: -0.5rem;
+  //   border-radius: inherit;
+  //   pointer-events: none;
+  //   box-shadow: 0 0 5px 4px;
+  //   opacity: 0.1;
+  //   filter: url(#wobbly-stroke);
+  // }
+
+  &__text {
+    font-family: $font-heading;
+    font-weight: 500;
+  }
+  img {
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-left: -0.2rem;
+  }
+
+  &--spotify {
+    background: #1ed760;
+    color: white;
+
+    &:hover {
+      background: #00a83c;
+    }
+  }
+}
+
+.review {
+  background: $green;
+  position: relative;
+  padding: 3.6rem 3.4rem;
+  border-radius: 0.8rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  border: 6px solid $dark;
+  max-width: 600px;
+  transform: rotate(-1.5deg);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__stars {
+    display: flex;
+    gap: 1rem;
+    height: calc(1.5vw + 1vh);
+  }
+
+  &__prod {
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 600;
+  }
+}

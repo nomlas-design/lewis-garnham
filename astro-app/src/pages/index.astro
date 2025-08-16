@@ -1,14 +1,20 @@
 ---
-import Card from "../components/Card.astro";
-import Welcome from "../components/Welcome.astro";
-import Layout from "../layouts/Layout.astro";
-import { getPosts } from "../utils/sanity";
-
-const posts = await getPosts();
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Gigs from '../components/Gigs.astro';
+import Podcast from '../components/Podcast.astro';
+import Specials from '../components/Specials.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Layout title="Welcome to Astro.">
-  <section>
-    {posts.length ? posts.map((post) => <Card post={post} />) : <Welcome />}
-  </section>
+<Layout title='Lewis Garnham | A Dude'>
+  <Navbar />
+  <Hero />
+  <About />
+  <Gigs />
+  <Podcast />
+  <Specials />
+  <Footer />
 </Layout>

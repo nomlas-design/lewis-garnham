@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic:wght@400&family=Lexend:wght@400;500;600;700;800&display=swap');
+
+// Font Families
+$font-heading:
+  'Lexend',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  sans-serif;
+$font-body: 'Didact Gothic', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+// Font-sizes
+$font-size-xs: 1rem;
+
+//Breakpoints
+$breakpoint-xl: 1480px; // Large desktops
+$breakpoint-lg: 992px; // Desktops
+$breakpoint-md: 768px; // Tablets
+$breakpoint-sm: 576px; // Large phones
+$breakpoint-xs: 480px; // Small phones
+
+// Breakpoint Mixins
+@mixin xl-down {
+  @media (max-width: #{$breakpoint-xl - 1px}) {
+    @content;
+  }
+}
+
+@mixin lg-down {
+  @media (max-width: #{$breakpoint-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin md-down {
+  @media (max-width: #{$breakpoint-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin sm-down {
+  @media (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin xs-down {
+  @media (max-width: #{$breakpoint-xs - 1px}) {
+    @content;
+  }
+}
+
+// Colours
+
+$blue: #acbed5;
+$beige: #ebe0af;
+$yellow: #ffbb28;
+$green: #494d3e;
+$dark: #222811;
+$text: #394028;
+
+//Spacing
+
+$spacing-sm: 2.2rem; // 8px
+$spacing-md: 3.6rem; // 16px
+$spacing-lg: 5.6rem;
+
+$section-padding: 12rem;

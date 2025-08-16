@@ -21,7 +21,8 @@
     "astro-app"
   ],
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "sass": "^1.90.0"
   },
   "type": "module"
 }
