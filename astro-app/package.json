@@ -13,11 +13,14 @@
     "@astrojs/check": "0.7.0",
     "@astrojs/react": "4.2.0",
     "@astrojs/vercel": "^7.7.2",
+    "@react-three/drei": "^10.7.4",
+    "@react-three/fiber": "^9.3.0",
     "@sanity/astro": "^3.1.4",
     "@sanity/image-url": "1.0.2",
     "@sanity/vision": "3.48.1",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
+    "@types/three": "^0.179.0",
     "astro": "^4.11.3",
     "astro-portabletext": "0.10.0",
     "autoprefixer": "10.4.19",
@@ -26,7 +29,8 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "sanity": "^3.76.1",
-    "sass": "^1.90.0"
+    "sass": "^1.90.0",
+    "three": "^0.179.1"
   },
   "devDependencies": {
     "@portabletext/types": "2.0.13",

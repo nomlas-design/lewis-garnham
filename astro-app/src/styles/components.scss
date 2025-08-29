@@ -1,17 +1,29 @@
 .btn {
   position: relative;
   display: flex;
+  justify-content: center;
+  align-items: center;
   background: $beige;
   color: $dark;
   align-self: flex-start;
   gap: 1.2rem;
   padding: 1.4rem $spacing-lg;
   border-radius: 0.8rem;
-  border: 5px solid $dark;
-  transition: background 0.15s ease-in-out;
+  border: 2px solid $dark;
+  transition:
+    background 0.15s ease-in-out,
+    border 0.15s ease-in-out;
 
   &:hover {
     background: $yellow;
+  }
+
+  &--border {
+    border-color: $green;
+
+    &:hover {
+      border-color: $beige;
+    }
   }
 
   // &::before {
@@ -42,11 +54,16 @@
   &__text {
     font-family: $font-heading;
     font-weight: 500;
+    text-align: center;
+    position: relative;
+    z-index: 1;
   }
   img {
     width: 2.4rem;
     height: 2.4rem;
     margin-left: -0.2rem;
+    position: relative;
+    z-index: 1;
   }
 
   &--spotify {
@@ -59,34 +76,169 @@
   }
 }
 
-.review {
-  background: $green;
-  position: relative;
-  padding: 3.6rem 3.4rem;
-  border-radius: 0.8rem;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-md;
-  border: 6px solid $dark;
-  max-width: 600px;
-  transform: rotate(-1.5deg);
+// Reviews
 
-  &__header {
+.reviews {
+  width: 100%;
+  bottom: 0;
+
+  &__container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    height: 700px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__track {
     display: flex;
-    align-items: center;
-    gap: $spacing-md;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+}
+
+// React Three Fiber Canvas
+.review-canvas {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 4px);
+  bottom: -2px;
+  pointer-events: none;
+  z-index: 0;
+
+  canvas {
+    pointer-events: auto;
+  }
+
+  // On smaller screens, hide or adjust the 3D reviews
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+// 3D Review styles
+.review-3d {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 12px;
+  width: 180px;
+  text-align: center;
+  font-family: $font-body;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
   }
 
   &__stars {
     display: flex;
-    gap: 1rem;
-    height: calc(1.5vw + 1vh);
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 8px;
+  }
+
+  &__star {
+    font-size: 16px;
+    color: #ddd;
+    transition: color 0.2s ease;
+
+    &--filled {
+      color: #ffd700;
+      text-shadow: 0 0 4px rgba(255, 215, 0, 0.5);
+    }
+  }
+
+  &__text {
+    font-size: 12px;
+    line-height: 1.4;
+    color: #333;
+    margin: 0;
+    font-style: italic;
+  }
+}
+
+.review {
+  background: linear-gradient(10deg, rgba(white, 0.2), rgba(white, 0.4));
+  padding: $spacing-md;
+  border-radius: 0.4rem;
+  min-height: 300px;
+  height: auto;
+  background-size: cover;
+  background-position: bottom;
+  border: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__stars {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  &__star {
+    width: 30px;
+    height: 30px;
   }
 
   &__prod {
-    color: white;
-    font-size: 2.8rem;
+    color: $dark;
+    font-size: 1.8rem;
     font-weight: 600;
+  }
+
+  &__body {
+    p {
+      margin-bottom: $spacing-sm;
+      color: $dark;
+      font-size: 1.6rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Gigs
+
+.gigs {
+  .gig {
+    display: grid;
+    grid-template-columns: 0.5fr 0.8fr 1.2fr 0.8fr;
+    align-items: center;
+    gap: 0.8rem;
+    padding: $spacing-sm $spacing-sm;
+    border-top: 2px solid $dark;
+    font-family: $font-heading;
+
+    &:last-of-type {
+      border-bottom: 2px solid $dark;
+    }
+
+    &__date {
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    &__location {
+      justify-self: left;
+      font-weight: 600;
+    }
+
+    &__copy {
+      justify-self: left;
+    }
   }
 }

@@ -19,6 +19,10 @@ $breakpoint-md: 768px; // Tablets
 $breakpoint-sm: 576px; // Large phones
 $breakpoint-xs: 480px; // Small phones
 
+//Sizes
+$logo-height: 100%;
+$nav-height: 160px;
+
 // Breakpoint Mixins
 @mixin xl-down {
   @media (max-width: #{$breakpoint-xl - 1px}) {
@@ -52,7 +56,7 @@ $breakpoint-xs: 480px; // Small phones
 
 // Colours
 
-$blue: #acbed5;
+$blue: #c8ced6;
 $beige: #ebe0af;
 $yellow: #ffbb28;
 $green: #494d3e;

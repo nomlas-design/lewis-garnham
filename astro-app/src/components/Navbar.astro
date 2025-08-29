@@ -10,12 +10,67 @@
       </div>
       <nav>
         <div class='nav__links'>
-          <a href='#about' class='nav__link'> About</a>
-          <a href='#shows' class='nav__link'> Shows</a>
-          <a href='#podcast' class='nav__link'> Podcast</a>
+          <a title='about' href='#about' class='nav__link' data-text='About'>
+            About</a
+          >
+          <a title='shows' href='#shows' class='nav__link' data-text='Shows'>
+            Shows</a
+          >
+          <a
+            title='podcast'
+            href='#podcast'
+            class='nav__link'
+            data-text='Podcast'
+          >
+            Podcast</a
+          >
         </div>
-        <a href='#contact' class='nav__link nav__link--alone'> Contact</a>
+        <a
+          title='contact'
+          href='#contact'
+          class='nav__link nav__link--alone'
+          data-text='Contact'
+        >
+          Contact</a
+        >
       </nav>
+      <div class='nav__location'>
+        <span>
+          Lewis tours internationally and is <span class='currently'
+            >currently based in London</span
+          >
+        </span>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initNavLocationAnimation() {
+    const location = document.querySelector('.nav__location') as HTMLElement;
+    if (!location) return;
+
+    gsap.to(location, {
+      y: -50,
+      duration: 1.5,
+      ease: 'power2.inOut',
+      scrollTrigger: {
+        trigger: document.body,
+        start: '200px top',
+        end: '350px top',
+        scrub: 1,
+      },
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNavLocationAnimation);
+  } else {
+    initNavLocationAnimation();
+  }
+</script>

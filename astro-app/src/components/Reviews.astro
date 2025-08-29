@@ -1,0 +1,74 @@
+---
+import Review from './Review.astro';
+---
+
+<div class='reviews'>
+  <div class='reviews__container'>
+    <div class='reviews__track'>
+      <Review />
+      <Review />
+      <Review />
+      <Review />
+      <Review />
+      <Review />
+      <Review />
+      <Review />
+    </div>
+  </div>
+</div>
+
+<script>
+  import gsap from 'gsap';
+
+  // Use DOMContentLoaded for initial load, or astro:after-swap for view transitions
+  function initReviewsAnimation() {
+    const track = document.querySelector('.reviews__track') as HTMLElement;
+    if (!track) return;
+
+    // Get the height of a single review
+    const reviews = track.querySelectorAll<HTMLElement>('.review');
+    if (reviews.length === 0) return;
+
+    setTimeout(() => {
+      const gap = 32;
+      const reviewHeight = reviews[0].offsetHeight + gap;
+      const totalHeight = reviewHeight * (reviews.length / 2);
+
+      gsap.set(track, { y: 0 });
+
+      // Create the animation
+      const tl = gsap.timeline({ repeat: -1 });
+
+      tl.to(track, {
+        y: -totalHeight,
+        duration: 20, // Adjust speed here
+        ease: 'none',
+      });
+
+      // Pause on hover
+      const container = document.querySelector(
+        '.reviews__container'
+      ) as HTMLElement;
+
+      if (container) {
+        container.addEventListener('mouseenter', () => {
+          gsap.to(tl, { timeScale: 0, duration: 0.5 });
+        });
+
+        container.addEventListener('mouseleave', () => {
+          gsap.to(tl, { timeScale: 1, duration: 0.5 });
+        });
+      }
+    }, 100); // Small delay to ensure layout is complete
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initReviewsAnimation);
+  } else {
+    initReviewsAnimation();
+  }
+
+  // Re-initialize on Astro page navigation (if using View Transitions)
+  document.addEventListener('astro:after-swap', initReviewsAnimation);
+</script>

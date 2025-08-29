@@ -1,37 +1,39 @@
 ---
 import Button from './Button.astro';
 import Slideshow from './Slideshow.astro';
-import Review from './Review.astro';
+import Reviews from './Reviews.astro';
+import Scene from './r3f/Scene.tsx';
 ---
 
-<div class='hero'>
-  <div class='container'>
-    <div class='grid grid--hero'>
-      <div class='content'>
-        <div class='copy'>
-          <h1 class='copy__title'>
-            There are few comedic voices as distinctive and exciting as Lewis
-            Garnham.
-          </h1>
-          <p class='copy__body'>
-            Since reaching the Melbourne International Comedy Festival RAW
-            Comedy National Final in 2016, Lewis has been captivating audiences
-            around the world with his potent style of stand-up which blends
-            storytelling, social commentary, and introspective observations with
-            a laconic, self-assured stage presence.
-          </p>
-          <!-- 
-          <Button text='Normal' class='primary' href='#' />
-          <Button
-            text='Normal'
-            class='spotify'
-            href='#'
-            icon='/SVG/spotify.svg'
-          /> -->
+<section class='section section--hero'>
+  <div class='hero'>
+    <div class='container'>
+      <div class='grid grid--hero'>
+        <div class='content'>
+          <div class='copy'>
+            <h1 class='copy__title'>
+              There are few comedic voices as distinctive and exciting as Lewis
+              Garnham.
+            </h1>
+            <p class='copy__body'>
+              After reaching the Melbourne International Comedy Festival RAW
+              Comedy National Final in 2016, Lewis has continued to captivate
+              audiences worldwide.
+            </p>
+            <p class='copy__body'>
+              His potent stand-up blends storytelling, social commentary, and
+              introspective observations, all delivered with a laconic,
+              self-assured stage presence.
+            </p>
+            <Button
+              text='Upcoming gigs'
+              class='btn btn--primary btn--border'
+              href='#'
+            />
+          </div>
         </div>
-        <Review />
       </div>
     </div>
+    <Scene client:load />
   </div>
-  <Slideshow />
-</div>
+</section>
