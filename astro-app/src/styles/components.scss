@@ -68,10 +68,19 @@
 
   &--spotify {
     background: #1ed760;
-    color: white;
 
     &:hover {
       background: #00a83c;
+    }
+  }
+
+  &--apple {
+    background: #7224d8;
+
+    color: white;
+
+    &:hover {
+      background: #5c1f9b;
     }
   }
 }

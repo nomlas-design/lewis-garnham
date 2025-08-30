@@ -53,6 +53,10 @@ footer {
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
+
+  &--col-2 {
+    grid-column: 2;
+  }
 }
 // Nav
 
@@ -144,7 +148,7 @@ nav {
   font-family: $font-heading;
   font-weight: 400;
   color: rgba(white, 0.6);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 
   .currently {
     color: rgba($beige, 0.8);
@@ -275,4 +279,111 @@ $slideshow-width: 43%;
     grid-template-columns: 2fr 1fr;
     grid-gap: 0.2rem;
   }
+}
+
+.podcast_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  position: relative;
+
+  .content {
+    width: 67%;
+    min-width: 500px;
+  }
+}
+
+.podcast {
+  background: $beige;
+  padding: $spacing-md;
+  color: $text;
+  border-radius: 1.2rem;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-gap: $spacing-md;
+  border: 2px solid $dark;
+  position: relative;
+  z-index: 2;
+
+  &__decoration {
+    position: absolute;
+    width: 260px;
+    right: $spacing-lg;
+    top: 245px;
+    opacity: 0.6;
+    z-index: 1;
+  }
+
+  &__cover {
+    width: 100%;
+    height: auto;
+    border-radius: 0.8rem;
+    object-fit: cover;
+    border: 2px solid $green;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 5;
+  }
+
+  &__subtitle {
+    color: #787a62;
+    margin-bottom: 2.2rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+
+  &__title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: $text;
+    margin-bottom: 1.2rem;
+  }
+
+  &__body {
+    color: $text;
+    font-size: 1.8rem;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: $spacing-sm;
+  }
+}
+
+.specials {
+  .copy {
+    &__midtitle {
+      color: $dark;
+    }
+  }
+}
+
+.grid--video {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.yt-lite > .lty-playbtn {
+  height: 100px !important;
+  width: 100px !important;
+  background-image: url('/SVG/play.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none !important;
+  background-color: transparent !important;
+  opacity: 0.8 !important;
+  cursor: pointer !important;
+
+  &:hover {
+    opacity: 1 !important;
+  }
+}
+
+.yt-lite > .lty-playbtn::before {
+  border: none !important;
 }

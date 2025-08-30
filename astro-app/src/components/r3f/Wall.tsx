@@ -138,9 +138,9 @@ const Wall = () => {
       const y = -(event.clientY / window.innerHeight) * 2 + 1;
 
       // Define light area in screen coordinates (upper right area)
-      const lightAreaX = 0.5; // Right side of screen
+      const lightAreaX = 0.29; // Right side of screen
       const lightAreaY = 0.4; // Upper area
-      const lightRadius = 0.8;
+      const lightRadius = 0.33;
 
       // Calculate distance to light area
       const distance = Math.sqrt(
@@ -165,25 +165,24 @@ const Wall = () => {
       {
         id: 1,
         title:
-          '“A true artist. How can one man be so funny?” - Theatre Travels, 2023',
-        text: 'Lewis was nominated for "Best Emerging Artist" at Adelaide Fringe in 2017 and followed up with nominations for "Best Comedy" at Perth Fringe World and the prestigious "Best Newcomer Award" at the Melbourne International Comedy Festival in 2018. He has since written and toured a new solo show every year, building a large, loyal audience.',
+          '“A true artist. How can one man be so funny?” \n Theatre Travels, 2023',
+        text: 'Lewis was nominated for "Best Emerging Artist" at Adelaide Fringe in 2017 and followed up with nominations for "Best Comedy" at Perth Fringe World and the prestigious "Best Newcomer Award" at the Melbourne International Comedy Festival in 2018.\n\nHe has since written and toured a new solo show every year, building a large, loyal audience.',
         starRating: 0,
         position: [0, 0.3, 0] as [number, number, number],
         inverted: false,
       },
       {
         id: 2,
-        title: '“A rich source of edgy jokes” - Chortle, 2023',
-        text: 'His 2023 show, Lewis Garnham Hit A Pigeon With His Bike, sold out across six cities (including selling out his entire 22 night run at Melbourne Comedy Festival) and became his debut stand-up special. It was produced by Recliner Films and released on Youtube where it clocked over 40,000 views in the first two months.',
+        title: '“A rich source of edgy jokes” \n Chortle, 2023',
+        text: 'His 2023 show, Lewis Garnham Hit A Pigeon With His Bike, sold out across six cities (including selling out his entire 22 night run at Melbourne Comedy Festival) and became his debut stand-up special.\n\nIt was produced by Recliner Films and released on Youtube where it clocked over 40,000 views in the first two months.',
         starRating: 4,
         position: [5, -0.2, 0] as [number, number, number],
         inverted: true,
       },
       {
         id: 3,
-        title:
-          '“A true artist. How can one man be so funny?” - Theatre Travels, 2023',
-        text: 'In 2024, Lewis performed at the Melbourne International Comedy Festival Oxfam Gala at The Palais Theatre - the biggest night in Australian comedy. He also won a Moosehead Award for his show Choosing The Wrong Story To Tell, had a successful Edinburgh Fringe run with a four star review in The Scotsman and multiple sell out shows and released Choosing The Wrong Story To Tell as his second special. This time it was shot at the iconic venue, Max Watts, Melbourne.',
+        title: 'The Scotsman, 2024',
+        text: 'In 2024, Lewis performed at the Melbourne International Comedy Festival Oxfam Gala at The Palais Theatre - the biggest night in Australian comedy.\n\nHe also won a Moosehead Award for his show Choosing The Wrong Story To Tell, had a successful Edinburgh Fringe run with a four star review in The Scotsman and multiple sell out shows and released Choosing The Wrong Story To Tell as his second special. This time it was shot at the iconic venue, Max Watts, Melbourne.',
         starRating: 4,
         position: [10, 0.1, 0] as [number, number, number],
         inverted: false,
@@ -191,7 +190,7 @@ const Wall = () => {
       {
         id: 4,
         title: 'Artshub, 2025',
-        text: "Lewis' self produced 2025 tour sold out its entire runs in Perth, Adelaide, Melbourne, Sydney, Brisbane and Byron Bay. At the 2025 Melbourne International Comedy Festival, after his entire 22 night season sold out, Lewis added 10 extra shows in bigger venues, which also entirely sold out.",
+        text: "Lewis' self produced 2025 tour sold out its entire runs in Perth, Adelaide, Melbourne, Sydney, Brisbane and Byron Bay.\n\nAt the 2025 Melbourne International Comedy Festival, after his entire 22 night season sold out, Lewis added 10 extra shows in bigger venues, which also entirely sold out.",
         starRating: 4,
         position: [15, -0.1, 0] as [number, number, number],
         inverted: true,

@@ -20,9 +20,9 @@ const Review = ({
   const frameRef = useRef<THREE.Group>(null);
 
   // Calculate frame size based on text content more accurately
-  const titleFontSize = 0.18;
-  const textFontSize = 0.13;
-  const lineHeight = 1.2;
+  const titleFontSize = 0.2;
+  const textFontSize = 0.15;
+  const lineHeight = 1.3;
 
   // Estimate text heights more accurately
   const estimateTextHeight = (
@@ -36,7 +36,7 @@ const Review = ({
     return lines * fontSize * lineHeight;
   };
 
-  const baseWidth = 2.2;
+  const baseWidth = 2;
   const width = Math.min(baseWidth + (title.length + text.length) / 400, 4);
   const maxTextWidth = width - 0.2;
 
@@ -57,7 +57,7 @@ const Review = ({
   );
 
   // Add padding between elements
-  const elementPadding = 0.1;
+  const elementPadding = 0.2;
   const framePadding = 0.25;
 
   // Calculate total content height - only title (with stars) and text
@@ -74,8 +74,8 @@ const Review = ({
   const textY = titleY - titleHeight / 2 - spacing - textHeight / 2;
 
   // Frame thickness
-  const frameThickness = 0.05;
-  const frameDepth = 0.05;
+  const frameThickness = 0.125;
+  const frameDepth = 0.2;
 
   // Load poster texture
   const posterTexture = useTexture(
@@ -84,7 +84,7 @@ const Review = ({
 
   // Colors based on inverted prop
   const backgroundColor = '#d6ceab';
-  const frameColor = '#3b3232';
+  const frameColor = '#222811';
   const textColor = '#000000';
 
   // Generate consistent rotation based on review content (not random each render)
@@ -155,6 +155,7 @@ const Review = ({
         lineHeight={lineHeight}
         textAlign='center'
         font='fonts/Lexend-Light.ttf'
+        fillOpacity={0.9}
       >
         {text}
       </Text>

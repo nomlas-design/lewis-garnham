@@ -7,7 +7,7 @@ import Gig from './Gig.astro';
 
 <section class='section--podcast'>
   <div class='container'>
-    <div class='grid grid--podcast'>
+    <div class='podcast_wrapper'>
       <div class='content'>
         <div class='copy'>
           <div class='copy__header'>
@@ -23,6 +23,36 @@ import Gig from './Gig.astro';
           </p>
         </div>
       </div>
+      <div class='podcast'>
+        <img
+          class='podcast__cover'
+          src='/images/podcast_cover.jpg'
+          alt='Stream of Contentedness'
+        />
+        <div class='podcast__content'>
+          <h5 class='podcast__subtitle'>Latest Episode</h5>
+          <h4 class='podcast__title'>Episode 40: We are dancing animals</h4>
+          <p class='podcast__body'>
+            One of my favourite episodes, tying together my experience of moving
+            to London, a woman buying wine every day, my stand up show from this
+            year and Kurt Vonnegut.
+          </p>
+          <div class='podcast__buttons'>
+            <Button
+              class='spotify'
+              icon='/SVG/spotify.svg'
+              text='Listen on Spotify'
+              href='#'
+            />
+            <Button
+              class='apple'
+              icon='/SVG/apple.svg'
+              text='Listen on Apple'
+              href='#'
+            />
+          </div>
+        </div>
+      </div>
       <img
         class='podcast__decoration'
         src='SVG/head.svg'
@@ -31,3 +61,28 @@ import Gig from './Gig.astro';
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const podcastDecoration = document.querySelector('.podcast__decoration');
+
+    if (podcastDecoration) {
+      gsap.to(podcastDecoration, {
+        top: '-34px',
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.section--podcast',
+          start: 'top bottom',
+          end: 'center top',
+          scrub: 1,
+        },
+      });
+    }
+  });
+</script>

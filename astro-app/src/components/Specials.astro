@@ -1,0 +1,21 @@
+---
+import Button from './Button.astro';
+import Slideshow from './Slideshow.astro';
+import Review from './Review.astro';
+import Video from './Video.tsx';
+---
+
+<section class='video'>
+  <div class='container specials'>
+    <div class='content'>
+      <div class='copy'>
+        <div class='copy__header'>
+          <h1 class='copy__toptitle'>Stories, Commentary, and a Few Truths</h1>
+          <h2 class='copy__midtitle'>Full Comedy Specials</h2>
+        </div>
+      </div>
+      <Video client:load />
+      <Video client:load />
+    </div>
+  </div>
+</section>
