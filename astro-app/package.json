@@ -25,6 +25,8 @@
     "astro-portabletext": "0.10.0",
     "autoprefixer": "10.4.19",
     "groq": "3.48.1",
+    "gsap": "^3.13.0",
+    "popmotion": "^11.0.5",
     "prettier-plugin-astro": "0.14.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",

@@ -10,12 +10,28 @@
   padding: 1.4rem $spacing-lg;
   border-radius: 0.8rem;
   border: 2px solid $dark;
-  transition:
-    background 0.15s ease-in-out,
-    border 0.15s ease-in-out;
+  overflow: hidden;
+  transition: border 0.15s ease-in-out;
 
-  &:hover {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
     background: $yellow;
+    transform: skewX(-15deg);
+    transform-origin: left;
+    transition:
+      width 0.3s ease-in-out,
+      left 0.3s ease-in-out;
+    z-index: 0;
+  }
+
+  &:hover::before {
+    width: 120%;
+    left: -10%;
   }
 
   &--border {
@@ -69,18 +85,17 @@
   &--spotify {
     background: #1ed760;
 
-    &:hover {
-      background: #00a83c;
+    &::before {
+      background: #00ff41;
     }
   }
 
   &--apple {
     background: #7224d8;
-
     color: white;
 
-    &:hover {
-      background: #5c1f9b;
+    &::before {
+      background: #9d4eff;
     }
   }
 }

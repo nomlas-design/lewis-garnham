@@ -5,6 +5,7 @@ export interface Props {
 
 const { title } = Astro.props;
 import '../styles/main.scss';
+import Loading from '../components/Loading';
 ---
 
 <!doctype html>
@@ -20,6 +21,7 @@ import '../styles/main.scss';
     <title>{title}</title>
   </head>
   <body>
+    <!-- <Loading client:load /> -->
     <svg
       class='organic-filters'
       style='position: absolute; width: 0; height: 0; overflow: hidden;'

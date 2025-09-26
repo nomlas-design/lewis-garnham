@@ -30,7 +30,6 @@
     "@react-three/fiber": "^9.3.0",
     "@studio-freight/lenis": "^1.0.42",
     "@types/three": "^0.179.0",
-    "gsap": "^3.13.0",
     "three": "^0.179.1"
   }
 }

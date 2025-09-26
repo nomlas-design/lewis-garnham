@@ -1,6 +1,7 @@
 import { useTexture } from '@react-three/drei';
 import { useThree, useFrame } from '@react-three/fiber';
 import { useEffect, useRef, useMemo, useState } from 'react';
+import { animate } from 'popmotion';
 import { RepeatWrapping } from 'three';
 import * as THREE from 'three';
 import Review from './Review';
@@ -111,6 +112,9 @@ const Wall = () => {
   const scrollOffset = useRef(0);
   const reviewGroupRef = useRef<THREE.Group>(null);
   const wallGroupRef = useRef<THREE.Group>(null);
+  const lightRigRef = useRef<THREE.Group>(null);
+  const spotLightRef = useRef<THREE.SpotLight>(null);
+  const lightAnimationRef = useRef<ReturnType<typeof animate> | null>(null);
 
   // Mouse interaction state
   const [mouseNearLight, setMouseNearLight] = useState(false);
@@ -138,9 +142,9 @@ const Wall = () => {
       const y = -(event.clientY / window.innerHeight) * 2 + 1;
 
       // Define light area in screen coordinates (upper right area)
-      const lightAreaX = 0.29; // Right side of screen
-      const lightAreaY = 0.4; // Upper area
-      const lightRadius = 0.33;
+      const lightAreaX = 0.1; // Right side of screen
+      const lightAreaY = 0.1; // Upper area
+      const lightRadius = 0.5;
 
       // Calculate distance to light area
       const distance = Math.sqrt(
@@ -157,7 +161,11 @@ const Wall = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseNearLight]);
 
-  const target = useMemo(() => new THREE.Object3D(), []);
+  const lightTarget = useMemo(() => {
+    const obj = new THREE.Object3D();
+    obj.position.set(0.5, -21.2, -2);
+    return obj;
+  }, []);
 
   // Real review data for Lewis Garnham's comedy career
   const reviews = useMemo(
@@ -239,6 +247,45 @@ const Wall = () => {
     }
   }, [brickTexture, viewport.width, viewport.height]);
 
+  useEffect(() => {
+    if (!lightRigRef.current || !spotLightRef.current) return;
+
+    const rig = lightRigRef.current;
+    const light = spotLightRef.current;
+    const initialZ = THREE.MathUtils.degToRad(34);
+
+    rig.rotation.set(0, 0, initialZ);
+    light.target.updateMatrixWorld();
+
+    const timeoutId = window.setTimeout(() => {
+      const animation = animate({
+        from: initialZ,
+        to: 0,
+        type: 'spring',
+        stiffness: 9.5,
+        damping: 1.75,
+        mass: 1.2,
+        restSpeed: 0.0025,
+        restDelta: 0.00005,
+        onUpdate: (value) => {
+          if (!lightRigRef.current) return;
+          rig.rotation.z = value;
+          light.target.updateMatrixWorld();
+        },
+      });
+
+      lightAnimationRef.current = animation;
+    }, 300);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      lightAnimationRef.current?.stop();
+      lightAnimationRef.current = null;
+      rig.rotation.set(0, 0, 0);
+      light.target.updateMatrixWorld();
+    };
+  }, []);
+
   // Animation loop for scrolling
   useFrame((state: any, delta: number) => {
     // Don't update animation if page is not visible (prevents catch-up scrolling)
@@ -260,22 +307,27 @@ const Wall = () => {
     camera.updateProjectionMatrix();
 
     scrollOffset.current += delta * currentSpeed.current;
+
+    if (spotLightRef.current) {
+      spotLightRef.current.target.updateMatrixWorld();
+    }
   });
 
   return (
     <group>
-      <primitive object={target} position={[3, -1.2, 3]} />
-
-      <spotLight
-        position={[3.55, 20, 5]}
-        target-position={[0, 0, 0]}
-        angle={Math.PI / 15} // 45 degrees for better coverage
-        penumbra={1}
-        intensity={100}
-        distance={50}
-        target={target}
-        decay={0.5}
-      />
+      <group ref={lightRigRef} position={[3.55, 20, 5]}>
+        <spotLight
+          ref={spotLightRef}
+          position={[0, 0, 0]}
+          angle={Math.PI / 15} // 45 degrees for better coverage
+          penumbra={1}
+          intensity={100}
+          distance={50}
+          target={lightTarget}
+          decay={0.5}
+        />
+        <primitive object={lightTarget} />
+      </group>
 
       {/* Wall group that moves as one unit */}
       <group ref={wallGroupRef}>
