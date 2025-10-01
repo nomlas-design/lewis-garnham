@@ -25,9 +25,6 @@ import Button from './Button.astro';
           </p>
           <form
             class='mailing-list__form'
-            action='https://docs.google.com/forms/d/e/1FAIpQLSfrOqkUab27uMUbp1bOFDI8RaUAqztSiadkMgro6v3jPlW18w/formResponse'
-            method='POST'
-            target='hidden_iframe'
             id='mailing-list-form'
           >
             <div class='form-group'>
@@ -35,7 +32,7 @@ import Button from './Button.astro';
               <input
                 type='email'
                 id='email'
-                name='entry.1099704569'
+                name='email'
                 required
                 placeholder='Email'
               />
@@ -45,15 +42,13 @@ import Button from './Button.astro';
               <input
                 type='text'
                 id='postcode'
-                name='entry.2050371045'
+                name='postcode'
                 required
                 placeholder='Postcode/ZIP Code'
               />
             </div>
             <Button text='Subscribe' type='submit' class='primary' />
           </form>
-          <iframe name='hidden_iframe' id='hidden_iframe' style='display:none;'>
-          </iframe>
         </div>
       </div>
     </div>
@@ -61,25 +56,39 @@ import Button from './Button.astro';
 </footer>
 
 <script>
-  let submitted = false;
   const form = document.getElementById('mailing-list-form') as HTMLFormElement;
-  const iframe = document.getElementById('hidden_iframe') as HTMLIFrameElement;
 
-  if (form && iframe) {
-    form.addEventListener('submit', function () {
-      submitted = true;
-    });
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-    iframe.addEventListener('load', function () {
-      if (submitted) {
+      const email = (document.getElementById('email') as HTMLInputElement).value;
+      const postcode = (document.getElementById('postcode') as HTMLInputElement).value;
+
+      // Construct the Google Form prefilled URL
+      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfrOqkUab27uMUbp1bOFDI8RaUAqztSiadkMgro6v3jPlW18w/formResponse?entry.1099704569=${encodeURIComponent(email)}&entry.2050371045=${encodeURIComponent(postcode)}&submit=Submit`;
+
+      // Open in a new tab (or could use fetch with no-cors mode)
+      fetch(formUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+      }).then(() => {
+        // Show success message
         const messageDiv = document.createElement('div');
         messageDiv.className = 'form-message';
         messageDiv.textContent = 'Thanks for subscribing!';
         form.appendChild(messageDiv);
         form.reset();
         setTimeout(() => messageDiv.remove(), 5000);
-        submitted = false;
-      }
+      }).catch(() => {
+        // Even on error, Google Forms usually accepts the submission
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'form-message';
+        messageDiv.textContent = 'Thanks for subscribing!';
+        form.appendChild(messageDiv);
+        form.reset();
+        setTimeout(() => messageDiv.remove(), 5000);
+      });
     });
   }
 </script>

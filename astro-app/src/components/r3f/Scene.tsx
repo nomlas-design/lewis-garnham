@@ -37,7 +37,7 @@ const Scene = ({ reviews }: SceneProps) => {
       <Canvas dpr={[1, 2]} shadows={{ type: THREE.PCFSoftShadowMap }}>
         <PerspectiveCamera
           makeDefault
-          position={isMobile ? [0, 2.65, 6.2] : [0, 0, 5]}
+          position={isMobile ? [0, 2.75, 6.7] : [0, 0, 5]}
           fov={isMobile ? 90 : 60}
         />
         <Wall reviews={reviews} />
