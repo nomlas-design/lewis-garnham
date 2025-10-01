@@ -42,7 +42,7 @@ const Scene = ({ reviews }: SceneProps) => {
 
         // Direct aspect ratio-based positioning for different phone widths
         const yPosition =
-          aspectRatio < 0.48 ? 2.75 : aspectRatio > 0.6 ? 2.0 : 4.5;
+          aspectRatio < 0.48 ? 2.45 : aspectRatio > 0.6 ? 2.0 : 4.5;
         const zPosition =
           aspectRatio < 0.48 ? 7.5 : aspectRatio > 0.6 ? 6.0 : 8.0;
         const mobileFov = aspectRatio < 0.48 ? 75 : aspectRatio > 0.6 ? 90 : 85;
