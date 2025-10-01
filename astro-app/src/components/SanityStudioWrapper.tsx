@@ -1,7 +1,7 @@
 import { useMemo, type CSSProperties } from 'react';
 import { createHashHistory, type History, type Listener } from 'history';
 import { Studio } from 'sanity';
-import config from '../sanity/sanity.config';
+import config from '../../sanity.config';
 
 const containerStyle: CSSProperties = {
   height: '100vh',
