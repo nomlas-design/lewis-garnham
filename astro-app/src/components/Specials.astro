@@ -1,21 +1,35 @@
 ---
-import Button from './Button.astro';
-import Slideshow from './Slideshow.astro';
-import Review from './Review.astro';
 import Video from './Video.tsx';
+import { getSpecials } from '../utils/sanity';
+
+const specials = await getSpecials();
 ---
 
 <section class='video'>
   <div class='container specials'>
     <div class='content'>
       <div class='copy'>
-        <div class='copy__header'>
-          <h1 class='copy__toptitle'>Stories, Commentary, and a Few Truths</h1>
+        <div class='copy__header copy__header--nomargin'>
+          <h1 class='copy__toptitle copy__toptitle--darker'>
+            Stories, Commentary, and a Few Truths
+          </h1>
           <h2 class='copy__midtitle'>Full Comedy Specials</h2>
         </div>
       </div>
-      <Video client:load />
-      <Video client:load />
+      <div class='specials-wrapper'>
+        {
+          specials.map((special, index) => (
+            <Video
+              client:load
+              title={special.title}
+              youtubeId={special.youtubeId}
+              description={special.description}
+              details={special.details}
+              reverse={index % 2 !== 0}
+            />
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>

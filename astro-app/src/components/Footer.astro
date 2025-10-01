@@ -1,0 +1,85 @@
+---
+import Button from './Button.astro';
+---
+
+<footer id='contact' class='section footer'>
+  <div class='container'>
+    <div class='grid grid--footer'>
+      <div class='content'>
+        <div class='contact'>
+          <h1>Contact</h1>
+          <img class='contact__arrow' src='/SVG/arrow.svg' alt='' />
+
+          <Button
+            class='contact'
+            icon='/SVG/email.svg'
+            text='humblemagpie@gmail.com'
+            href='mailto:humblemagpie@gmail.com'
+          />
+        </div>
+        <div class='copy'>
+          <h2 class='copy__title'>Join the Mailing List</h2>
+          <p class='copy__body'>
+            Join Lewis Garnham's mailing list for show alerts and exclusive
+            offers.
+          </p>
+          <form
+            class='mailing-list__form'
+            action='https://docs.google.com/forms/d/e/1FAIpQLSfrOqkUab27uMUbp1bOFDI8RaUAqztSiadkMgro6v3jPlW18w/formResponse'
+            method='POST'
+            target='hidden_iframe'
+            id='mailing-list-form'
+          >
+            <div class='form-group'>
+              <label for='email' class='sr-only'>Email *</label>
+              <input
+                type='email'
+                id='email'
+                name='entry.1099704569'
+                required
+                placeholder='Email'
+              />
+            </div>
+            <div class='form-group'>
+              <label for='postcode' class='sr-only'>Postcode/ZIP Code *</label>
+              <input
+                type='text'
+                id='postcode'
+                name='entry.2050371045'
+                required
+                placeholder='Postcode/ZIP Code'
+              />
+            </div>
+            <Button text='Subscribe' type='submit' class='primary' />
+          </form>
+          <iframe name='hidden_iframe' id='hidden_iframe' style='display:none;'>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let submitted = false;
+  const form = document.getElementById('mailing-list-form') as HTMLFormElement;
+  const iframe = document.getElementById('hidden_iframe') as HTMLIFrameElement;
+
+  if (form && iframe) {
+    form.addEventListener('submit', function () {
+      submitted = true;
+    });
+
+    iframe.addEventListener('load', function () {
+      if (submitted) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'form-message';
+        messageDiv.textContent = 'Thanks for subscribing!';
+        form.appendChild(messageDiv);
+        form.reset();
+        setTimeout(() => messageDiv.remove(), 5000);
+        submitted = false;
+      }
+    });
+  }
+</script>

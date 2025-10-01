@@ -5,10 +5,20 @@
 <div class='nav-wrapper'>
   <div class='container'>
     <div class='nav'>
-      <div class='logo'>
+      <a href='#top' class='logo'>
         <img class='logo__img' alt='Lewis Garnham' src='/SVG/logo.svg' />
+      </a>
+      <div class='nav__hamburger'>
+        <label>
+          <input type='checkbox' id='nav-toggle' />
+          <svg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
+            <path class='line--1' d='M0 70l28-28c2-2 2-2 7-2h64'></path>
+            <path class='line--2' d='M0 50h99'></path>
+            <path class='line--3' d='M0 30l28 28c2 2 2 2 7 2h64'></path>
+          </svg>
+        </label>
       </div>
-      <nav>
+      <nav class='nav__menu'>
         <div class='nav__links'>
           <a title='about' href='#about' class='nav__link' data-text='About'>
             About</a
@@ -33,14 +43,14 @@
         >
           Contact</a
         >
+        <div class='nav__location'>
+          <span>
+            Lewis tours internationally and is <span class='currently'
+              >currently based in London</span
+            >
+          </span>
+        </div>
       </nav>
-      <div class='nav__location'>
-        <span>
-          Lewis tours internationally and is <span class='currently'
-            >currently based in London</span
-          >
-        </span>
-      </div>
     </div>
   </div>
 </div>
@@ -68,9 +78,181 @@
     });
   }
 
+  // Mobile menu animations
+  function setupMobileMenu() {
+    const toggle = document.getElementById('nav-toggle') as HTMLInputElement;
+    const hamburgerLabel = document.querySelector(
+      '.nav__hamburger label'
+    ) as HTMLElement;
+    const links = document.querySelectorAll(
+      '.nav__link'
+    ) as NodeListOf<HTMLElement>;
+    const navWrapper = document.querySelector('.nav-wrapper') as HTMLElement;
+    const navMenu = document.querySelector('.nav__menu') as HTMLElement;
+    const navLocation = document.querySelector(
+      '.nav__menu .nav__location'
+    ) as HTMLElement;
+
+    if (!toggle || !navWrapper || !navMenu || !hamburgerLabel) return;
+
+    let isAnimating = false;
+
+    // Close menu when clicking on links (mobile only)
+    links.forEach((link) => {
+      link.addEventListener('click', () => {
+        if (isAnimating) return;
+        const isMobile = window.innerWidth < 992; // md-down breakpoint
+        if (isMobile && toggle.checked) {
+          toggle.checked = false;
+          closeMenu();
+        }
+      });
+    });
+
+    // Toggle menu with animations
+    toggle.addEventListener('change', () => {
+      if (isAnimating) return;
+      if (toggle.checked) {
+        openMenu();
+      } else {
+        closeMenu();
+      }
+    });
+
+    // Reset menu state on resize to desktop
+    let resizeTimeout: any;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const isDesktop = window.innerWidth >= 992; // md-down breakpoint
+        if (isDesktop && toggle.checked) {
+          // Reset without animation
+          toggle.checked = false;
+          navWrapper.classList.remove('nav-open');
+          document.body.style.overflow = '';
+          gsap.set(navWrapper, { height: '160px' });
+          gsap.set(links, { opacity: 1, x: 0 });
+          if (navLocation) {
+            gsap.set(navLocation, { opacity: 1 });
+          }
+        }
+      }, 150);
+    });
+
+    function openMenu() {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      // Lock body scroll
+      document.body.style.overflow = 'hidden';
+
+      // Disable hamburger clicks during animation
+      hamburgerLabel.style.pointerEvents = 'none';
+
+      navWrapper.classList.add('nav-open');
+
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          isAnimating = false;
+          hamburgerLabel.style.pointerEvents = '';
+        },
+      });
+
+      // Expand nav wrapper
+      timeline.to(navWrapper, {
+        height: '100dvh',
+        duration: 1,
+        ease: 'power2.inOut',
+      });
+
+      // Stagger links in from left
+      timeline.fromTo(
+        links,
+        {
+          opacity: 0,
+          x: -20,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.4,
+          stagger: 0.1,
+          ease: 'power2.out',
+        },
+        '-=0.2' // Start slightly before wrapper finishes
+      );
+
+      // Fade in location last
+      if (navLocation) {
+        timeline.fromTo(
+          navLocation,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.4, ease: 'power2.out' },
+          '-=0.2'
+        );
+      }
+    }
+
+    function closeMenu() {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      // Disable hamburger clicks during animation
+      hamburgerLabel.style.pointerEvents = 'none';
+
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          navWrapper.classList.remove('nav-open');
+          isAnimating = false;
+          hamburgerLabel.style.pointerEvents = '';
+          // Unlock body scroll
+          document.body.style.overflow = '';
+        },
+      });
+
+      // Fade out location first
+      if (navLocation) {
+        timeline.to(navLocation, {
+          opacity: 0,
+          duration: 0.3,
+          ease: 'power2.in',
+        });
+      }
+
+      // Stagger links out in reverse
+      timeline.to(
+        Array.from(links).reverse(),
+        {
+          opacity: 0,
+          x: -20,
+          duration: 0.3,
+          stagger: 0.08,
+          ease: 'power2.in',
+        },
+        '-=0.1'
+      );
+
+      // Collapse nav wrapper to appropriate height based on screen size
+      const isMobile = window.innerWidth < 576;
+      timeline.to(
+        navWrapper,
+        {
+          height: isMobile ? '120px' : '160px',
+          duration: 0.8,
+          ease: 'power2.inOut',
+        },
+        '-=0.2'
+      );
+    }
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNavLocationAnimation);
+    document.addEventListener('DOMContentLoaded', () => {
+      initNavLocationAnimation();
+      setupMobileMenu();
+    });
   } else {
     initNavLocationAnimation();
+    setupMobileMenu();
   }
 </script>

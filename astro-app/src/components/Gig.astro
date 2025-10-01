@@ -1,16 +1,35 @@
 ---
 import Button from './Button.astro';
+
+interface Props {
+  date: string;
+  location: string;
+  description?: string;
+  link: string;
+  soldOut: boolean;
+}
+
+const { date, location, description, link, soldOut } = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString('en-AU', {
+  month: 'short',
+  day: 'numeric',
+});
 ---
 
 <div class='gig'>
   <div class='gig__date'>
-    <span>Aug 12</span>
+    <span>{formattedDate}</span>
   </div>
   <div class='gig__location'>
-    <span>Manchester (UK)</span>
+    <span>{location}</span>
   </div>
-  <div class='gig__copy'>Old, new, everything in between.</div>
+  {description && <div class='gig__copy'>{description}</div>}
   <div class='gig__btn'>
-    <Button text='Tickets Available' href='#' class='primary' />
+    <Button
+      text={soldOut ? 'Sold Out' : 'Tickets Available'}
+      href={link}
+      class='primary'
+    />
   </div>
 </div>

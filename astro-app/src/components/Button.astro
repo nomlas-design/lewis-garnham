@@ -1,20 +1,32 @@
 ---
 export interface Props {
   text: string;
-  href: string;
+  href?: string;
   class?: string;
   icon?: string;
+  type?: 'button' | 'submit' | 'reset';
+  target?: '_blank' | '_self' | '_parent' | '_top';
 }
 
-const { text, href, class: className = '', icon } = Astro.props;
+const { text, href, class: className = '', icon, type, target } = Astro.props;
+const isButton = type || !href;
 ---
 
-<a
-  href={href}
-  class={`btn btn--${className}`}
-  target='_blank'
-  rel='noopener noreferrer'
->
-  {icon && <img src={icon} alt='' />}
-  <span class='btn__text'>{text}</span>
-</a>
+{
+  isButton ? (
+    <button type={type || 'button'} class={`btn btn--${className}`}>
+      {icon && <img src={icon} alt='' />}
+      <span class='btn__text'>{text}</span>
+    </button>
+  ) : (
+    <a
+      href={href}
+      class={`btn btn--${className}`}
+      target={target}
+      rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+    >
+      {icon && <img src={icon} alt='' />}
+      <span class='btn__text'>{text}</span>
+    </a>
+  )
+}

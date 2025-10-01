@@ -13,22 +13,16 @@ $font-body: 'Didact Gothic', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $font-size-xs: 1rem;
 
 //Breakpoints
-$breakpoint-xl: 1480px; // Large desktops
-$breakpoint-lg: 992px; // Desktops
-$breakpoint-md: 768px; // Tablets
+$breakpoint-lg: 1480px; // Large desktops
+$breakpoint-md: 992px; // Desktops
 $breakpoint-sm: 576px; // Large phones
-$breakpoint-xs: 480px; // Small phones
 
 //Sizes
 $logo-height: 100%;
 $nav-height: 160px;
+$nav-height-mobile: 120px;
 
 // Breakpoint Mixins
-@mixin xl-down {
-  @media (max-width: #{$breakpoint-xl - 1px}) {
-    @content;
-  }
-}
 
 @mixin lg-down {
   @media (max-width: #{$breakpoint-lg - 1px}) {
@@ -44,12 +38,6 @@ $nav-height: 160px;
 
 @mixin sm-down {
   @media (max-width: #{$breakpoint-sm - 1px}) {
-    @content;
-  }
-}
-
-@mixin xs-down {
-  @media (max-width: #{$breakpoint-xs - 1px}) {
     @content;
   }
 }

@@ -3,16 +3,17 @@ section,
   padding: $section-padding 0;
   position: relative;
 
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.3'/%3E%3C/svg%3E");
-    pointer-events: none;
+  @include sm-down {
+    padding: 8rem 0;
   }
+
   &--hero {
     padding-top: $nav-height;
     padding-bottom: 0;
+
+    @include sm-down {
+      padding-top: $nav-height-mobile;
+    }
   }
 
   &--podcast {
@@ -25,28 +26,69 @@ section,
   background-size: cover;
   background-repeat: no-repeat;
   color: white;
+  background-color: black;
+  background-position: -5vw;
+
+  @include md-down {
+    background-position: -15vw;
+  }
+
+  @include sm-down {
+    background-position: -100vw;
+
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: 0;
+      background: rgba(0, 0, 0, 0.7);
+      top: 0;
+      height: 100%;
+      width: 100%;
+    }
+  }
   h2 {
     color: $yellow;
   }
-}
 
-main {
+  .h-span {
+    @include md-down {
+      flex-direction: row;
+    }
+    @include sm-down {
+      flex-direction: column;
+    }
+  }
+
+  .content--col-2 {
+    position: relative;
+    z-index: 1;
+    @include md-down {
+      grid-column: 1/ -1;
+    }
+
+    .btn {
+      @include sm-down {
+        width: 100%;
+      }
+    }
+  }
 }
 
 .container {
   width: 100%;
-  max-width: $breakpoint-xl;
+  max-width: $breakpoint-lg;
   padding: 0 $spacing-sm;
   margin: 0 auto;
-}
-
-footer {
 }
 
 .h-span {
   display: flex;
   align-items: center;
   gap: $spacing-sm;
+
+  @include md-down {
+    flex-direction: column;
+  }
 }
 
 .content {
@@ -57,7 +99,17 @@ footer {
   &--col-2 {
     grid-column: 2;
   }
+
+  &--video {
+    align-self: center;
+    gap: 2.2rem;
+
+    .copy__subtitle {
+      color: $dark;
+    }
+  }
 }
+
 // Nav
 
 .nav-wrapper {
@@ -74,6 +126,11 @@ footer {
   background-size: cover;
   will-change: background-position; // Optimize for animations
   transition: transform 0.2s ease-out;
+
+  @include sm-down {
+    height: $nav-height-mobile;
+  }
+
   &::before {
     content: '';
     position: absolute;
@@ -109,11 +166,116 @@ footer {
   }
 }
 
-nav {
+// Hamburger menu
+.nav__hamburger {
+  display: none;
+  position: absolute;
+  z-index: 12;
+  right: 0;
+  top: calc($nav-height / 2 - 2.2rem);
+  transform: scale(2);
+
+  @include md-down {
+    display: block;
+  }
+
+  @include sm-down {
+    top: calc($nav-height-mobile / 2 - 2.2rem);
+  }
+
+  input {
+    display: none;
+  }
+
+  label {
+    display: block;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  path {
+    fill: none;
+    stroke: $beige;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    --length: 24;
+    --offset: -38;
+    stroke-dasharray: var(--length) var(--total-length);
+    stroke-dashoffset: var(--offset);
+    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .line--1,
+  .line--3 {
+    --total-length: 111.22813415527344;
+    --offset: -50.22813415527344;
+  }
+
+  .line--2 {
+    --total-length: 99;
+  }
+
+  input:checked + svg path {
+    transform: translateX(30px);
+  }
+
+  input:checked + svg .line--1,
+  input:checked + svg .line--3 {
+    --length: 22.627416998;
+    --offset: -16.9705627485;
+  }
+
+  input:checked + svg .line--2 {
+    --length: 0;
+    --offset: -20;
+  }
+}
+
+.nav__menu {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
+
+  @include md-down {
+    display: none;
+    position: absolute;
+    top: $nav-height;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - $nav-height);
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 1rem;
+    padding-top: 2rem;
+    gap: $spacing-md;
+    z-index: 11;
+
+    // Hide links by default on mobile for GSAP animation
+    .nav__link,
+    .nav__location {
+      opacity: 0;
+    }
+  }
+
+  @include sm-down {
+    top: $nav-height-mobile;
+    height: calc(100dvh - $nav-height-mobile);
+  }
+
+  .nav-open & {
+    @include md-down {
+      display: flex;
+    }
+  }
 }
 .nav__link {
   font-weight: 700;
@@ -123,12 +285,8 @@ nav {
   text-transform: uppercase;
   transition: opacity 0.15s ease-in-out;
 
-  &--alone {
-  }
-
   &:hover {
     filter: brightness(150%);
-    //exlcusion
     opacity: 0.7;
     color: white;
     text-shadow: 0 0 2px $dark;
@@ -138,6 +296,11 @@ nav {
 .nav__links {
   display: flex;
   gap: $spacing-lg;
+
+  @include md-down {
+    gap: $spacing-md;
+    flex-direction: column;
+  }
 }
 
 .nav__location {
@@ -150,6 +313,21 @@ nav {
   color: rgba(white, 0.6);
   font-size: 1.5rem;
 
+  @include md-down {
+    display: none;
+  }
+
+  .nav-open & {
+    @include md-down {
+      display: block;
+      position: static;
+      text-align: center;
+      margin-top: auto;
+      padding-bottom: $spacing-md;
+      font-size: 1.4rem;
+    }
+  }
+
   .currently {
     color: rgba($beige, 0.8);
     font-weight: 600;
@@ -158,9 +336,20 @@ nav {
 
 .logo {
   width: 100%;
-  max-width: 500px;
-  max-height: 200px;
-  height: 100%;
+  width: 220px;
+  height: 112px;
+
+  @include md-down {
+    position: absolute;
+    left: 0;
+    top: calc($nav-height / 2 - 5rem);
+  }
+
+  @include sm-down {
+    width: 140px;
+    height: 80px;
+    top: calc($nav-height-mobile / 2 - 4rem);
+  }
 
   &__img {
     height: 100%;
@@ -184,10 +373,14 @@ nav {
     margin-bottom: $spacing-sm;
     font-size: 1.6rem;
     font-weight: 500;
+
+    &--darker {
+      color: $green;
+    }
   }
   &__midtitle {
     color: $beige;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.6rem;
   }
   &__subtitle {
     color: white;
@@ -197,12 +390,20 @@ nav {
 
   &__header {
     margin-bottom: $spacing-md;
+    &--nomargin {
+      margin-bottom: 0;
+    }
   }
 
   &__body {
     &--white {
       color: white;
     }
+  }
+
+  &__small {
+    font-size: 1.6rem;
+    font-weight: 500;
   }
 }
 
@@ -213,6 +414,11 @@ nav {
   gap: $spacing-lg;
   overflow: hidden;
   color: white;
+
+  @include sm-down {
+    height: 140vh;
+    align-items: flex-start;
+  }
 
   h1 {
     font-size: 3.2rem;
@@ -233,8 +439,24 @@ nav {
     flex-direction: column;
     justify-content: center;
     gap: $spacing-lg;
-    padding: 12.5rem 0;
+    padding: 15.5rem 0;
     font-size: 1.8rem;
+
+    @include sm-down {
+      padding: 6rem 0 8rem 0;
+    }
+
+    .copy {
+      @include md-down {
+        max-width: 500px;
+      }
+    }
+
+    .btn {
+      @include sm-down {
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -265,19 +487,38 @@ $slideshow-width: 43%;
 .grid {
   display: grid;
   gap: $spacing-lg;
+
   &--2-col {
     grid-template-columns: 1fr 1fr;
+
+    @include md-down {
+      grid-template-columns: 1fr;
+    }
   }
+
   &--hero {
     grid-template-columns: 1fr 0.7fr;
 
-    .content {
+    @include md-down {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--footer {
+    grid-template-columns: 1.5fr 1fr;
+
+    @include md-down {
+      grid-template-columns: 1fr;
     }
   }
 
   &--podcast {
     grid-template-columns: 2fr 1fr;
     grid-gap: 0.2rem;
+
+    @include md-down {
+      grid-template-columns: 1fr;
+    }
   }
 }
 
@@ -290,6 +531,13 @@ $slideshow-width: 43%;
   .content {
     width: 67%;
     min-width: 500px;
+    position: relative;
+    z-index: 2;
+
+    @include md-down {
+      width: 100%;
+      min-width: unset;
+    }
   }
 }
 
@@ -297,13 +545,20 @@ $slideshow-width: 43%;
   background: $beige;
   padding: $spacing-md;
   color: $text;
-  border-radius: 1.2rem;
   display: grid;
   grid-template-columns: 220px 1fr;
   grid-gap: $spacing-md;
   border: 2px solid $dark;
   position: relative;
   z-index: 2;
+
+  @include md-down {
+    grid-template-columns: 1fr;
+  }
+
+  @include sm-down {
+    padding: $spacing-sm;
+  }
 
   &__decoration {
     position: absolute;
@@ -312,6 +567,14 @@ $slideshow-width: 43%;
     top: 245px;
     opacity: 0.6;
     z-index: 1;
+
+    @include md-down {
+      opacity: 0.3;
+    }
+
+    @include sm-down {
+      right: 0;
+    }
   }
 
   &__cover {
@@ -320,6 +583,9 @@ $slideshow-width: 43%;
     border-radius: 0.8rem;
     object-fit: cover;
     border: 2px solid $green;
+    @include md-down {
+      display: none;
+    }
   }
 
   &__content {
@@ -352,6 +618,15 @@ $slideshow-width: 43%;
   &__buttons {
     display: flex;
     gap: $spacing-sm;
+
+    @include sm-down {
+      flex-direction: column;
+    }
+    .btn {
+      @include sm-down {
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -363,8 +638,56 @@ $slideshow-width: 43%;
   }
 }
 
+.specials-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
 .grid--video {
   grid-template-columns: 1.5fr 1fr;
+
+  @include md-down {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+
+  @include sm-down {
+    gap: $spacing-sm;
+  }
+
+  &-reverse {
+    grid-template-columns: 1fr 1.5fr;
+
+    @include md-down {
+      grid-template-columns: 1fr;
+    }
+
+    .yt-lite {
+      order: 2;
+
+      @include md-down {
+        order: unset;
+      }
+    }
+    .content {
+      order: 1;
+
+      @include md-down {
+        order: unset;
+      }
+    }
+  }
+}
+
+.yt-lite {
+  border: 2px solid #222811;
+
+  &.lyt-activated {
+    .lty-playbtn {
+      display: none !important;
+    }
+  }
 }
 
 .yt-lite > .lty-playbtn {
@@ -386,4 +709,149 @@ $slideshow-width: 43%;
 
 .yt-lite > .lty-playbtn::before {
   border: none !important;
+}
+
+.yt-lite.lyt-activated > .lty-playbtn {
+  display: none !important;
+}
+
+// Footer
+
+.footer {
+  background: url('/images/footer.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+
+  @include sm-down {
+    padding: 8rem 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), transparent);
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    @include sm-down {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h1 {
+      color: $yellow;
+    }
+
+    &__arrow {
+      width: 70px;
+      @include md-down {
+        flex-shrink: 1;
+        width: auto;
+        max-width: 50px;
+      }
+      @include sm-down {
+        display: none;
+      }
+    }
+
+    p {
+      color: white;
+    }
+
+    .btn {
+      align-self: flex-start;
+
+      @include md-down {
+        width: 100%;
+      }
+    }
+  }
+
+  .copy__title {
+    margin-bottom: 2.2rem;
+    color: $beige;
+  }
+
+  .copy__body {
+    color: white;
+  }
+
+  .mailing-list__form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+
+    @include md-down {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include sm-down {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      padding: 1.4rem 1.6rem;
+      background: white;
+      border: 2px solid $dark;
+      color: $dark;
+      font-family: $font-body;
+      font-size: 1.6rem;
+      transition: all 0.3s ease-in-out;
+      position: relative;
+      width: 100%;
+
+      &::placeholder {
+        color: rgba($dark, 0.6);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $yellow;
+        box-shadow: 0 4px 8px rgba($dark, 0.1);
+      }
+
+      &:hover:not(:focus) {
+        border-color: $green;
+      }
+    }
+
+    .btn {
+      align-self: stretch;
+      width: 100%;
+      font-size: 1.8rem;
+      @include md-down {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .form-message {
+      grid-column: 1 / -1;
+      padding: 1rem;
+      text-align: left;
+      color: $beige;
+      font-family: $font-heading;
+      font-size: 1.4rem;
+    }
+  }
 }

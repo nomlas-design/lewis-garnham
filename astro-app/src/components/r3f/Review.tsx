@@ -7,16 +7,9 @@ interface ReviewProps {
   text: string;
   starRating: number;
   position: [number, number, number];
-  inverted?: boolean;
 }
 
-const Review = ({
-  title,
-  text,
-  starRating,
-  position,
-  inverted = false,
-}: ReviewProps) => {
+const Review = ({ title, text, starRating, position }: ReviewProps) => {
   const frameRef = useRef<THREE.Group>(null);
 
   // Calculate frame size based on text content more accurately
@@ -82,7 +75,6 @@ const Review = ({
     '/src/components/r3f/images/poster_texture.jpg'
   );
 
-  // Colors based on inverted prop
   const backgroundColor = '#d6ceab';
   const frameColor = '#222811';
   const textColor = '#000000';

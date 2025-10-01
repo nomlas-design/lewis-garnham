@@ -1,3 +1,16 @@
+// Screen reader only - visually hidden but accessible
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 .btn {
   position: relative;
   display: flex;
@@ -8,10 +21,16 @@
   align-self: flex-start;
   gap: 1.2rem;
   padding: 1.4rem $spacing-lg;
-  border-radius: 0.8rem;
+  //border-radius: 0.8rem;
   border: 2px solid $dark;
   overflow: hidden;
   transition: border 0.15s ease-in-out;
+  min-width: 300px;
+
+  @include sm-down {
+    font-size: 1.6rem;
+    gap: 1rem;
+  }
 
   &::before {
     content: '';
@@ -98,6 +117,14 @@
       background: #9d4eff;
     }
   }
+
+  &--contact {
+    background: $yellow;
+
+    &::before {
+      background: $beige;
+    }
+  }
 }
 
 // Reviews
@@ -133,13 +160,13 @@
   pointer-events: none;
   z-index: 0;
 
-  canvas {
-    pointer-events: auto;
+  @include sm-down {
+    height: 150vh;
+    top: 0;
   }
 
-  // On smaller screens, hide or adjust the 3D reviews
-  @media (max-width: 768px) {
-    display: none;
+  canvas {
+    pointer-events: auto;
   }
 }
 
@@ -247,6 +274,26 @@
     border-top: 2px solid $dark;
     font-family: $font-heading;
 
+    @include md-down {
+      grid-template-columns: 0.4fr 0.8fr 1.2fr;
+      row-gap: 2rem;
+      padding: $spacing-sm 0;
+
+      .gig__btn {
+        grid-column: 1/-1;
+      }
+    }
+
+    @include sm-down {
+      grid-template-columns: 1fr 1fr;
+      .gig__copy {
+        grid-column: 1 / -1;
+      }
+      .gig__location {
+        justify-self: end;
+      }
+    }
+
     &:last-of-type {
       border-bottom: 2px solid $dark;
     }
@@ -263,6 +310,27 @@
 
     &__copy {
       justify-self: left;
+    }
+  }
+}
+
+.no-shows {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  text-align: center;
+
+  &__text {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: $text;
+    max-width: 600px;
+  }
+
+  .btn {
+    @include sm-down {
+      width: 100%;
     }
   }
 }

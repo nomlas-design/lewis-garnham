@@ -1,21 +1,40 @@
 ---
-import Button from './Button.astro';
-import Slideshow from './Slideshow.astro';
-import Review from './Review.astro';
 import Gig from './Gig.astro';
+import Button from './Button.astro';
+import { getShows } from '../utils/sanity';
+
+const shows = await getShows();
+const hasShows = shows && shows.length > 0;
 ---
 
-<section class='section--gigs'>
+<section id='shows' class='section--gigs'>
   <div class='container'>
     <div class='content'>
       <div class='copy'>
         <h2 class='copy__title'>Upcoming Live Shows</h2>
       </div>
-      <div class='gigs'>
-        <Gig />
-        <Gig />
-        <Gig />
-      </div>
+      {
+        hasShows ? (
+          <div class='gigs'>
+            {shows.map((show) => (
+              <Gig
+                date={show.date}
+                location={show.location}
+                description={show.description}
+                link={show.link}
+                soldOut={show.soldOut}
+              />
+            ))}
+          </div>
+        ) : (
+          <div class='no-shows'>
+            <p class='no-shows__text'>
+              No upcoming shows. Join the mailing list to stay up to date.
+            </p>
+            <Button text='Join Mailing List' class='primary' href='#contact' />
+          </div>
+        )
+      }
     </div>
   </div>
 </section>

@@ -20,7 +20,6 @@ interface ReviewGroupProps {
     text: string;
     starRating: number;
     position: [number, number, number];
-    inverted: boolean;
   }>;
   scrollOffset: React.MutableRefObject<number>;
 }
@@ -48,7 +47,6 @@ const ReviewGroup: React.FC<ReviewGroupProps> = ({ reviews, scrollOffset }) => {
                 text={review.text}
                 starRating={review.starRating}
                 position={review.position}
-                inverted={review.inverted}
               />
             );
           })}
@@ -93,24 +91,35 @@ const WallElement: React.FC<WallElementProps> = ({
     }
   });
 
+  // Extend wall height for mobile to cover increased canvas
+  const wallHeight = viewport.height * 1.5;
+
   return (
     <mesh
       ref={meshRef}
       rotation={[0, 0, 0]}
-      position={[index * viewport.width, 0, 0]}
+      position={[index * viewport.width, viewport.height * 0.25, 0]}
       receiveShadow
     >
-      <planeGeometry args={[viewport.width, viewport.height]} />
+      <planeGeometry args={[viewport.width, wallHeight]} />
       <meshStandardMaterial map={brickTexture} />
     </mesh>
   );
 };
 
-const Wall = () => {
+interface WallProps {
+  reviews?: Array<{
+    id: number;
+    title: string;
+    text: string;
+    starRating: number;
+  }>;
+}
+
+const Wall = ({ reviews: reviewsProp }: WallProps) => {
   // Get viewport information to make wall cover entire view
   const { viewport, camera } = useThree();
   const scrollOffset = useRef(0);
-  const reviewGroupRef = useRef<THREE.Group>(null);
   const wallGroupRef = useRef<THREE.Group>(null);
   const lightRigRef = useRef<THREE.Group>(null);
   const spotLightRef = useRef<THREE.SpotLight>(null);
@@ -120,8 +129,25 @@ const Wall = () => {
   const [mouseNearLight, setMouseNearLight] = useState(false);
   const currentSpeed = useRef(0.15);
 
+  // Responsive breakpoints
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
   // Page visibility state to pause animation when tab is inactive
   const [isPageVisible, setIsPageVisible] = useState(true);
+
+  // Track screen size for responsive adjustments
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 576);
+      setIsTablet(width >= 576 && width < 992);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Track page visibility to prevent catch-up scrolling
   useEffect(() => {
@@ -142,8 +168,8 @@ const Wall = () => {
       const y = -(event.clientY / window.innerHeight) * 2 + 1;
 
       // Define light area in screen coordinates (upper right area)
-      const lightAreaX = 0.1; // Right side of screen
-      const lightAreaY = 0.1; // Upper area
+      const lightAreaX = 0.5; // Right side of screen
+      const lightAreaY = 0.25; // Upper area
       const lightRadius = 0.5;
 
       // Calculate distance to light area
@@ -161,31 +187,36 @@ const Wall = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseNearLight]);
 
+  // Responsive light target position
   const lightTarget = useMemo(() => {
     const obj = new THREE.Object3D();
-    obj.position.set(0.5, -21.2, -2);
+    if (isMobile) {
+      obj.position.set(0, -8, -2); // Much lower target for mobile
+    } else if (isTablet) {
+      obj.position.set(0, -21.2, -2); // Slightly left for tablet
+    } else {
+      obj.position.set(0.5, -21.2, -2); // Default desktop
+    }
     return obj;
-  }, []);
+  }, [isMobile, isTablet]);
 
-  // Real review data for Lewis Garnham's comedy career
-  const reviews = useMemo(
+  // Real review data for Lewis Garnham's comedy career (fallback if no prop provided)
+  const defaultReviews = useMemo(
     () => [
       {
         id: 1,
         title:
-          '“A true artist. How can one man be so funny?” \n Theatre Travels, 2023',
+          '"A true artist. How can one man be so funny?" \n Theatre Travels, 2023',
         text: 'Lewis was nominated for "Best Emerging Artist" at Adelaide Fringe in 2017 and followed up with nominations for "Best Comedy" at Perth Fringe World and the prestigious "Best Newcomer Award" at the Melbourne International Comedy Festival in 2018.\n\nHe has since written and toured a new solo show every year, building a large, loyal audience.',
         starRating: 0,
         position: [0, 0.3, 0] as [number, number, number],
-        inverted: false,
       },
       {
         id: 2,
-        title: '“A rich source of edgy jokes” \n Chortle, 2023',
+        title: '"A rich source of edgy jokes" \n Chortle, 2023',
         text: 'His 2023 show, Lewis Garnham Hit A Pigeon With His Bike, sold out across six cities (including selling out his entire 22 night run at Melbourne Comedy Festival) and became his debut stand-up special.\n\nIt was produced by Recliner Films and released on Youtube where it clocked over 40,000 views in the first two months.',
         starRating: 4,
         position: [5, -0.2, 0] as [number, number, number],
-        inverted: true,
       },
       {
         id: 3,
@@ -193,7 +224,6 @@ const Wall = () => {
         text: 'In 2024, Lewis performed at the Melbourne International Comedy Festival Oxfam Gala at The Palais Theatre - the biggest night in Australian comedy.\n\nHe also won a Moosehead Award for his show Choosing The Wrong Story To Tell, had a successful Edinburgh Fringe run with a four star review in The Scotsman and multiple sell out shows and released Choosing The Wrong Story To Tell as his second special. This time it was shot at the iconic venue, Max Watts, Melbourne.',
         starRating: 4,
         position: [10, 0.1, 0] as [number, number, number],
-        inverted: false,
       },
       {
         id: 4,
@@ -201,11 +231,27 @@ const Wall = () => {
         text: "Lewis' self produced 2025 tour sold out its entire runs in Perth, Adelaide, Melbourne, Sydney, Brisbane and Byron Bay.\n\nAt the 2025 Melbourne International Comedy Festival, after his entire 22 night season sold out, Lewis added 10 extra shows in bigger venues, which also entirely sold out.",
         starRating: 4,
         position: [15, -0.1, 0] as [number, number, number],
-        inverted: true,
       },
     ],
     []
   );
+
+  // Add positions to reviews from prop or use default reviews
+  const reviews = useMemo(() => {
+    if (reviewsProp && reviewsProp.length > 0) {
+      const positions: [number, number, number][] = [
+        [0, 0.3, 0],
+        [5, -0.2, 0],
+        [10, 0.1, 0],
+        [15, -0.1, 0],
+      ];
+      return reviewsProp.map((review, index) => ({
+        ...review,
+        position: positions[index % positions.length],
+      }));
+    }
+    return defaultReviews;
+  }, [reviewsProp, defaultReviews]);
 
   // Load the brick texture using the correct path
   const brickTexture = useTexture(
@@ -239,20 +285,27 @@ const Wall = () => {
         brickTexture.offset.set(-0.3, (1 - scale) / 2 - 0.2);
       }
 
-      // Make texture repeat multiple times for smooth scrolling, but zoom in more (smaller repeat = larger bricks)
-      brickTexture.repeat.multiplyScalar(0.8);
+      // Make texture repeat multiple times for smooth scrolling
+      // On mobile, make bricks much smaller (higher repeat value = smaller bricks)
+      const textureScale = isMobile ? 2.5 : 0.8;
+      brickTexture.repeat.multiplyScalar(textureScale);
 
       // Update the texture
       brickTexture.needsUpdate = true;
     }
-  }, [brickTexture, viewport.width, viewport.height]);
+  }, [brickTexture, viewport.width, viewport.height, isMobile]);
 
   useEffect(() => {
     if (!lightRigRef.current || !spotLightRef.current) return;
 
     const rig = lightRigRef.current;
     const light = spotLightRef.current;
-    const initialZ = THREE.MathUtils.degToRad(34);
+
+    // Different initial angles for mobile vs desktop
+    const initialZ = isMobile
+      ? THREE.MathUtils.degToRad(30)
+      : THREE.MathUtils.degToRad(34);
+    const finalZ = isMobile ? THREE.MathUtils.degToRad(10) : 0;
 
     rig.rotation.set(0, 0, initialZ);
     light.target.updateMatrixWorld();
@@ -260,7 +313,7 @@ const Wall = () => {
     const timeoutId = window.setTimeout(() => {
       const animation = animate({
         from: initialZ,
-        to: 0,
+        to: finalZ,
         type: 'spring',
         stiffness: 9.5,
         damping: 1.75,
@@ -275,25 +328,28 @@ const Wall = () => {
       });
 
       lightAnimationRef.current = animation;
-    }, 300);
+    }, 2500);
 
     return () => {
       window.clearTimeout(timeoutId);
       lightAnimationRef.current?.stop();
       lightAnimationRef.current = null;
-      rig.rotation.set(0, 0, 0);
+      rig.rotation.set(0, 0, finalZ);
       light.target.updateMatrixWorld();
     };
-  }, []);
+  }, [isMobile]);
 
-  // Animation loop for scrolling
   useFrame((state: any, delta: number) => {
     // Don't update animation if page is not visible (prevents catch-up scrolling)
     if (!isPageVisible) return;
 
     // Smooth transitions for speed and zoom
-    const targetSpeed = mouseNearLight ? 0.04 : 0.12; // Slow down when near light
-    const targetZoom = mouseNearLight ? 1.1 : 1.0; // Slight zoom when near light
+    let targetSpeed = 0.12;
+    let targetZoom = 1.0;
+    if (!isMobile) {
+      targetSpeed = mouseNearLight ? 0.04 : 0.12; // Slow down when near light
+      targetZoom = mouseNearLight ? 1.1 : 1.0; // Slight zoom when near light
+    }
 
     // Lerp for smooth transitions
     currentSpeed.current = THREE.MathUtils.lerp(
@@ -313,18 +369,33 @@ const Wall = () => {
     }
   });
 
+  const lightPosition: [number, number, number] = useMemo(() => {
+    if (isMobile) {
+      return [3, 10, 8];
+    } else if (isTablet) {
+      return [2.5, 20, 5]; // Slightly left on tablet
+    } else {
+      return [3.55, 20, 5]; // Default desktop
+    }
+  }, [isMobile, isTablet]);
+
+  // Responsive ambient light intensity
+  const ambientIntensity = isMobile ? 0.08 : 0.05;
+
   return (
     <group>
-      <group ref={lightRigRef} position={[3.55, 20, 5]}>
+      <ambientLight intensity={ambientIntensity} />
+      <group ref={lightRigRef} position={lightPosition}>
         <spotLight
           ref={spotLightRef}
           position={[0, 0, 0]}
-          angle={Math.PI / 15} // 45 degrees for better coverage
-          penumbra={1}
-          intensity={100}
-          distance={50}
+          angle={isMobile ? Math.PI / 4 : Math.PI / 15}
+          penumbra={isMobile ? 0.5 : 1}
+          intensity={isMobile ? 500 : 100}
+          distance={isMobile ? 100 : 50}
           target={lightTarget}
-          decay={0.5}
+          decay={isMobile ? 1.5 : 0.5}
+          castShadow={false}
         />
         <primitive object={lightTarget} />
       </group>

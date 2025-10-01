@@ -1,11 +1,12 @@
 ---
 import Button from './Button.astro';
-import Slideshow from './Slideshow.astro';
-import Review from './Review.astro';
-import Gig from './Gig.astro';
+import { getPodcasts } from '../utils/sanity';
+
+const podcasts = await getPodcasts();
+const latestPodcast = podcasts[0];
 ---
 
-<section class='section--podcast'>
+<section id='podcast' class='section--podcast'>
   <div class='container'>
     <div class='podcast_wrapper'>
       <div class='content'>
@@ -17,7 +18,7 @@ import Gig from './Gig.astro';
           </div>
           <p class='copy__body copy__body--white'>
             Lewis Garnham meanders through the contents of his brain - culture,
-            art, politics, philosophy, and storytelling—all delivered in a
+            art, politics, philosophy, and storytelling - all delivered in a
             stream-of-consciousness style that’s as comforting as it is
             surprising.
           </p>
@@ -31,24 +32,26 @@ import Gig from './Gig.astro';
         />
         <div class='podcast__content'>
           <h5 class='podcast__subtitle'>Latest Episode</h5>
-          <h4 class='podcast__title'>Episode 40: We are dancing animals</h4>
+          <h4 class='podcast__title'>
+            {latestPodcast?.title || 'Coming Soon'}
+          </h4>
           <p class='podcast__body'>
-            One of my favourite episodes, tying together my experience of moving
-            to London, a woman buying wine every day, my stand up show from this
-            year and Kurt Vonnegut.
+            {latestPodcast?.description || 'New episodes coming soon!'}
           </p>
           <div class='podcast__buttons'>
             <Button
               class='spotify'
               icon='/SVG/spotify.svg'
               text='Listen on Spotify'
-              href='#'
+              href='https://open.spotify.com/show/6AAXFb5wNzSZwrOGx8tUsY'
+              target='_blank'
             />
             <Button
               class='apple'
               icon='/SVG/apple.svg'
               text='Listen on Apple'
-              href='#'
+              href='https://podcasts.apple.com/au/podcast/stream-of-contentedness-with-lewis-garnham/id1779506603'
+              target='_blank'
             />
           </div>
         </div>

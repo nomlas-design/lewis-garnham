@@ -141,7 +141,6 @@ const Loading = () => {
 
     const tl = gsap.timeline({
       onComplete: () => {
-        restoreScroll();
         setIsComplete(true);
       },
     });
@@ -172,7 +171,7 @@ const Loading = () => {
         duration: 0.8,
         ease: 'ease1.out',
       },
-      '-=0.4'
+      '-=0.1'
     );
 
     tl.to(
@@ -191,8 +190,9 @@ const Loading = () => {
         opacity: 0,
         duration: 1,
         ease: 'power2.inOut',
+        onStart: restoreScroll,
       },
-      '-=0.8'
+      '-=0.1'
     );
 
     return tl;
