@@ -781,6 +781,9 @@ $slideshow-width: 43%;
       @include md-down {
         width: 100%;
       }
+      @include sm-down {
+        padding: 1.4rem 2.6rem;
+      }
     }
   }
 
@@ -841,6 +844,7 @@ $slideshow-width: 43%;
       align-self: stretch;
       width: 100%;
       font-size: 1.8rem;
+      cursor: pointer;
       @include md-down {
         grid-column: 1 / -1;
       }

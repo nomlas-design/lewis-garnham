@@ -23,16 +23,21 @@ import Button from './Button.astro';
             Join Lewis Garnham's mailing list for show alerts and exclusive
             offers.
           </p>
+          <iframe name='hidden_iframe' id='hidden_iframe' style='display:none;'
+          ></iframe>
           <form
             class='mailing-list__form'
             id='mailing-list-form'
+            action='https://docs.google.com/forms/d/e/1FAIpQLSfrOqkUab27uMUbp1bOFDI8RaUAqztSiadkMgro6v3jPlW18w/formResponse'
+            method='POST'
+            target='hidden_iframe'
           >
             <div class='form-group'>
               <label for='email' class='sr-only'>Email *</label>
               <input
                 type='email'
                 id='email'
-                name='email'
+                name='entry.1888566909'
                 required
                 placeholder='Email'
               />
@@ -42,13 +47,16 @@ import Button from './Button.astro';
               <input
                 type='text'
                 id='postcode'
-                name='postcode'
+                name='entry.1104418972'
                 required
                 placeholder='Postcode/ZIP Code'
               />
             </div>
             <Button text='Subscribe' type='submit' class='primary' />
           </form>
+          <div id='success-message' style='display:none;' class='form-message'>
+            Thanks for subscribing! We'll keep you updated.
+          </div>
         </div>
       </div>
     </div>
@@ -57,38 +65,26 @@ import Button from './Button.astro';
 
 <script>
   const form = document.getElementById('mailing-list-form') as HTMLFormElement;
+  const iframe = document.getElementById('hidden_iframe') as HTMLIFrameElement;
+  const successMessage = document.getElementById(
+    'success-message'
+  ) as HTMLElement;
+  let submitted = false;
 
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
+  if (form && iframe) {
+    form.addEventListener('submit', function () {
+      submitted = true;
+    });
 
-      const email = (document.getElementById('email') as HTMLInputElement).value;
-      const postcode = (document.getElementById('postcode') as HTMLInputElement).value;
-
-      // Construct the Google Form prefilled URL
-      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfrOqkUab27uMUbp1bOFDI8RaUAqztSiadkMgro6v3jPlW18w/formResponse?entry.1099704569=${encodeURIComponent(email)}&entry.2050371045=${encodeURIComponent(postcode)}&submit=Submit`;
-
-      // Open in a new tab (or could use fetch with no-cors mode)
-      fetch(formUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-      }).then(() => {
-        // Show success message
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'form-message';
-        messageDiv.textContent = 'Thanks for subscribing!';
-        form.appendChild(messageDiv);
-        form.reset();
-        setTimeout(() => messageDiv.remove(), 5000);
-      }).catch(() => {
-        // Even on error, Google Forms usually accepts the submission
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'form-message';
-        messageDiv.textContent = 'Thanks for subscribing!';
-        form.appendChild(messageDiv);
-        form.reset();
-        setTimeout(() => messageDiv.remove(), 5000);
-      });
+    iframe.addEventListener('load', function () {
+      if (submitted) {
+        // Hide form and show success message
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+        successMessage.style.color = '#ffbb28';
+        successMessage.style.fontWeight = '600';
+        submitted = false;
+      }
     });
   }
 </script>
