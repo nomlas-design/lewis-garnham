@@ -254,9 +254,7 @@ const Wall = ({ reviews: reviewsProp }: WallProps) => {
   }, [reviewsProp, defaultReviews]);
 
   // Load the brick texture using the correct path
-  const brickTexture = useTexture(
-    '/src/components/r3f/images/brick_texture.jpg'
-  );
+  const brickTexture = useTexture('/images/brick_texture.jpg');
 
   useEffect(() => {
     // Set texture to repeat for infinite scrolling
