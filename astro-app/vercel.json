@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "**/*.mjs": {
-      "runtime": "nodejs20.x"
-    }
-  }
-}
