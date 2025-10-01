@@ -416,7 +416,7 @@ section,
   color: white;
 
   @include sm-down {
-    height: 1150px;
+    min-height: 150vh;
     align-items: flex-start;
   }
 

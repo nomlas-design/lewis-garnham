@@ -94,11 +94,15 @@ const WallElement: React.FC<WallElementProps> = ({
   // Extend wall height for mobile to cover increased canvas
   const wallHeight = viewport.height * 1.5;
 
+  // Adjust wall Y position based on aspect ratio for skinny phones
+  const aspectRatio = typeof window !== 'undefined' ? window.innerWidth / window.innerHeight : 1;
+  const wallYPosition = aspectRatio < 0.48 ? viewport.height * 0.35 : viewport.height * 0.25;
+
   return (
     <mesh
       ref={meshRef}
       rotation={[0, 0, 0]}
-      position={[index * viewport.width, viewport.height * 0.25, 0]}
+      position={[index * viewport.width, wallYPosition, 0]}
       receiveShadow
     >
       <planeGeometry args={[viewport.width, wallHeight]} />
@@ -191,7 +195,10 @@ const Wall = ({ reviews: reviewsProp }: WallProps) => {
   const lightTarget = useMemo(() => {
     const obj = new THREE.Object3D();
     if (isMobile) {
-      obj.position.set(0, -8, -2); // Much lower target for mobile
+      // Adjust target Y based on aspect ratio for skinny phones
+      const aspectRatio = window.innerWidth / window.innerHeight;
+      const targetY = aspectRatio < 0.48 ? -6 : -8; // Higher target for skinny devices
+      obj.position.set(0, targetY, -2);
     } else if (isTablet) {
       obj.position.set(0, -21.2, -2); // Slightly left for tablet
     } else {
