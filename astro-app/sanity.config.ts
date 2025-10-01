@@ -2,6 +2,7 @@ import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { schemaTypes } from './src/sanity/schemaTypes';
+import React from 'react';
 
 const projectId =
   import.meta.env.SANITY_STUDIO_PROJECT_ID ||
@@ -21,13 +22,25 @@ const dataset =
   process.env.PUBLIC_SANITY_DATASET ||
   'production';
 
+const Logo = () =>
+  React.createElement('img', {
+    src: '/SVG/logo.svg',
+    alt: 'Lewis Garnham',
+    style: { maxHeight: '40px', width: 'auto' },
+  });
+
 export default defineConfig({
-  name: 'sanity-template-astro-clean',
-  title: 'Sanity Astro Starter',
+  name: 'lewis-garnham',
+  title: 'Lewis Garnham',
   projectId,
   dataset,
   plugins: [structureTool(), visionTool()],
   schema: {
     types: schemaTypes,
+  },
+  studio: {
+    components: {
+      logo: Logo,
+    },
   },
 });

@@ -26,6 +26,11 @@ export default defineConfig({
   output: 'hybrid',
   adapter: vercel({
     functionPerRoute: false,
+    edgeMiddleware: false,
+    imageService: true,
+    isr: {
+      expiration: 60 * 60 * 24, // 1 day
+    },
   }),
   integrations: [
     sanity({
