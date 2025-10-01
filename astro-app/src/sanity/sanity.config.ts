@@ -23,7 +23,7 @@ const dataset =
 
 export default defineConfig({
   name: 'sanity-template-astro-clean',
-  title: 'Sanity Astro Starter',
+  title: 'Lewis Garnham',
   projectId,
   dataset,
   plugins: [structureTool(), visionTool()],
