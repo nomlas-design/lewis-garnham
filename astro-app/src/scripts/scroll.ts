@@ -24,6 +24,8 @@ let lastScroll = 0;
 let isNavbarHidden = false;
 let isNavigating = false;
 const HIDE_THRESHOLD = 300;
+const SCROLL_DELTA_THRESHOLD = 5; // Minimum scroll distance to trigger hide/show
+const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 function updateNavbar() {
   if (!ticking) {
@@ -45,15 +47,18 @@ function updateNavbar() {
       }
 
       // Don't hide navbar during navigation
+      // On mobile, require a larger scroll delta to prevent jittery behavior
+      const deltaThreshold = isMobileDevice ? SCROLL_DELTA_THRESHOLD : 1;
+
       if (scrollY > HIDE_THRESHOLD && !isNavigating) {
-        if (scrollDelta > 0 && !isNavbarHidden) {
+        if (scrollDelta > deltaThreshold && !isNavbarHidden) {
           gsap.to(navbar, {
             y: '-100%',
-            duration: 0.5,
+            duration: isMobileDevice ? 0.3 : 0.5,
             ease: 'power2.inOut',
           });
           isNavbarHidden = true;
-        } else if (scrollDelta < 0 && isNavbarHidden) {
+        } else if (scrollDelta < -deltaThreshold && isNavbarHidden) {
           gsap.to(navbar, {
             y: '0%',
             duration: 0.3,
