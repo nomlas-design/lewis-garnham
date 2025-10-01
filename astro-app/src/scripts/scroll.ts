@@ -112,6 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Prevent navbar from hiding during navigation
         isNavigating = true;
 
+        // Disable pointer events during scroll to prevent hover effects
+        document.body.style.pointerEvents = 'none';
+
         // Ensure navbar is visible
         if (isNavbarHidden) {
           gsap.to(navbar, {
@@ -131,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
           offset: navbarOffset,
           duration: 1.5,
           onComplete: () => {
-            // Re-enable navbar hiding after a short delay
+            // Re-enable pointer events and navbar hiding
+            document.body.style.pointerEvents = '';
             setTimeout(() => {
               isNavigating = false;
             }, 500);
