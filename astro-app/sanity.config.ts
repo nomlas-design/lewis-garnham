@@ -24,7 +24,7 @@ const dataset =
 
 const Logo = () =>
   React.createElement('img', {
-    src: '/SVG/logo.svg',
+    src: '/SVG/favicon.svg',
     alt: 'Lewis Garnham',
     style: { maxHeight: '40px', width: 'auto' },
   });
@@ -34,6 +34,7 @@ export default defineConfig({
   title: 'Lewis Garnham',
   projectId,
   dataset,
+  icon: Logo,
   plugins: [structureTool(), visionTool()],
   schema: {
     types: schemaTypes,
