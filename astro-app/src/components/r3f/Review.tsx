@@ -71,9 +71,7 @@ const Review = ({ title, text, starRating, position }: ReviewProps) => {
   const frameDepth = 0.2;
 
   // Load poster texture
-  const posterTexture = useTexture(
-    '/src/components/r3f/images/poster_texture.jpg'
-  );
+  const posterTexture = useTexture('/images/poster_texture.jpg');
 
   const backgroundColor = '#d6ceab';
   const frameColor = '#222811';
