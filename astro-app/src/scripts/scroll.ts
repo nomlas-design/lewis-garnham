@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 
 const lenis = new Lenis({
   duration: 1.2,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   orientation: 'vertical',
   gestureOrientation: 'vertical',
   smoothWheel: true,
@@ -12,13 +12,13 @@ const lenis = new Lenis({
   infinite: false,
 });
 
-function raf(time) {
+function raf(time: number) {
   lenis.raf(time);
   requestAnimationFrame(raf);
 }
 requestAnimationFrame(raf);
 
-const navbar = document.querySelector('.nav-wrapper');
+const navbar = document.querySelector('.nav-wrapper') as HTMLElement;
 let ticking = false;
 let lastScroll = 0;
 let isNavbarHidden = false;
