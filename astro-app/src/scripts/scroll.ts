@@ -134,11 +134,9 @@ document.addEventListener('DOMContentLoaded', () => {
           offset: navbarOffset,
           duration: 1.5,
           onComplete: () => {
-            // Re-enable pointer events and navbar hiding
+            // Re-enable pointer events immediately
             document.body.style.pointerEvents = '';
-            setTimeout(() => {
-              isNavigating = false;
-            }, 500);
+            isNavigating = false;
           },
         });
       }
