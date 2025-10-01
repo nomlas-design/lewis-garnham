@@ -726,6 +726,7 @@ $slideshow-width: 43%;
 
   @include sm-down {
     padding: 8rem 0;
+    background-position: 70%;
   }
 
   &::after {
