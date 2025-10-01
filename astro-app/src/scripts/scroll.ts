@@ -95,10 +95,12 @@ window.addEventListener('resize', () => {
 
 // Smooth scroll to anchor links with Lenis
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener('click', function (e) {
+  document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
       e.preventDefault();
-      const targetId = this.getAttribute('href').slice(1);
+      const targetId = anchor.getAttribute('href')?.slice(1);
+      if (!targetId) return;
+
       const targetElement = document.getElementById(targetId);
 
       if (targetElement) {
