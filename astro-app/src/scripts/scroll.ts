@@ -1,22 +1,4 @@
-import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
-
-const lenis = new Lenis({
-  duration: 1.2,
-  easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  orientation: 'vertical',
-  gestureOrientation: 'vertical',
-  smoothWheel: true,
-  wheelMultiplier: 1,
-  touchMultiplier: 2,
-  infinite: false,
-});
-
-function raf(time: number) {
-  lenis.raf(time);
-  requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
 
 const navbar = document.querySelector('.nav-wrapper') as HTMLElement;
 let ticking = false;
@@ -30,7 +12,7 @@ const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera
 function updateNavbar() {
   if (!ticking) {
     requestAnimationFrame(() => {
-      const scrollY = lenis.scroll;
+      const scrollY = window.scrollY;
       const scrollDelta = scrollY - lastScroll;
 
       const maxScroll =
@@ -90,7 +72,8 @@ function updateNavbar() {
     ticking = true;
   }
 }
-lenis.on('scroll', updateNavbar);
+
+window.addEventListener('scroll', updateNavbar, { passive: true });
 
 updateNavbar();
 
@@ -98,7 +81,7 @@ window.addEventListener('resize', () => {
   updateNavbar();
 });
 
-// Smooth scroll to anchor links with Lenis
+// Smooth scroll to anchor links
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
@@ -127,18 +110,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Determine navbar offset based on screen size
         const isMobile = window.innerWidth < 576;
-        const navbarOffset = isMobile ? -120 : -160;
+        const navbarOffset = isMobile ? 120 : 160;
 
-        // Smooth scroll with Lenis
-        lenis.scrollTo(targetElement, {
-          offset: navbarOffset,
-          duration: 1.5,
-          onComplete: () => {
-            // Re-enable pointer events immediately
-            document.body.style.pointerEvents = '';
-            isNavigating = false;
-          },
+        // Calculate target position
+        const targetPosition = targetElement.offsetTop - navbarOffset;
+
+        // Smooth scroll with native browser API
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth',
         });
+
+        // Wait for scroll to complete (approximate duration)
+        setTimeout(() => {
+          // Re-enable pointer events
+          document.body.style.pointerEvents = '';
+          isNavigating = false;
+        }, 1500);
       }
     });
   });
